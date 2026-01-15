@@ -1,6 +1,8 @@
 import os
 import re
 from eansearch import EANSearch
+from typing import Annotated
+from pydantic import Field
 from mcp.server.fastmcp import FastMCP
 
 # Initialize FastMCP server
@@ -11,12 +13,8 @@ eansearch = EANSearch(ean_search_api_token)
 
 
 @app.tool()
-async def lookup_product(barcode: str) -> str:
-    """Lookup the product for an EAN, GTIN, ISBN or UPC barcode.
-
-    Args:
-        barcode: the barcode (EAN, GTIN, ISBN or UPC)
-    """
+async def lookup_product(barcode: Annotated[str, Field(description="the barcode (EAN, GTIN, ISBN or UPC)")]) -> str:
+    """Lookup the product for an EAN, GTIN, ISBN or UPC barcode."""
     if not ean_search_api_token:
         return "You need to set put your API token into the environment variable EAN_SEARCH_API_TOKEN. Get your API token from https://www.ean-search.org/ean-database-api.html"
     barcode = re.sub('[^0-9Xx]', '', barcode)
@@ -30,12 +28,8 @@ async def lookup_product(barcode: str) -> str:
     return barcode + " is product " + data
 
 @app.tool()
-async def find_products(keywords: str) -> str:
-    """Find products matching all the keywords with their EAN barcode.
-
-    Args:
-        keywords: keywords to search for
-    """
+async def find_products(keywords: Annotated[str,  Field(description="keywords to search for")]) -> str:
+    """Find products matching all the keywords including their EAN barcode."""
     if not ean_search_api_token:
         return "You need to set put your API token into the environment variable EAN_SEARCH_API_TOKEN. Get your API token from https://www.ean-search.org/ean-database-api.html"
     productlist = eansearch.productSearch(keywords)

@@ -10,14 +10,18 @@ requires-python = ">=3.13"
 dependencies = [
     "eansearch>=1.8.3",
     "mcp[cli]>=1.9.3",
+	"pydantic>=1.0",
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
-    "Intended Audience :: Developers"
 ]
 license = "MIT"
 license-files = ["LICEN[CS]E*"]
+
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
 
 [project.urls]
 Homepage = "https://github.com/eansearch/eansearch-mcp-server"
